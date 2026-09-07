@@ -1,0 +1,10 @@
+# docker-compose.yml — khung Docker Compose cho agent-platform.
+# Hiện tại CHƯA có service nào — đây chỉ là file placeholder.
+# Các service sẽ được thêm dần ở các bước sau, ví dụ:
+#   - serve       : API/HTTP phục vụ agent (thư mục serve/)
+#   - langfuse     : hệ thống theo dõi/log lời gọi LLM (Langfuse)
+#   - open-webui   : giao diện chat để dùng agent
+#
+# Đổi provider/model không cần sửa file này — sửa file YAML trong configs/.
+
+services: {}
