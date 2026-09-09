@@ -1,0 +1,47 @@
+# configs/flows/demo_two_step.yaml
+# FLOW MẪU — tuần tự, không rẽ nhánh, không vòng lặp, không fan-out.
+# Vì vậy nó ĐỦ ĐIỀU KIỆN khai báo bằng YAML (kind: sequential).
+#
+# Flow này chứng minh hai điều:
+#   1. Nối output bước trước vào input bước sau (upper.text -> summarize.text).
+#   2. Trộn TOOL (không LLM, không token) và AGENT (có LLM, có token) trong
+#      cùng một flow; flow_runner phân nhánh thực thi dựa trên trường `type`
+#      của thành phần được `ref` trỏ tới, không dựa trên gì khai báo ở đây.
+#
+# TUYỆT ĐỐI KHÔNG có if/for/biểu thức/nội suy biến trong file này. Mọi liên kết
+# dữ liệu đều viết dưới dạng mapping khai báo {from: ...}, không phải chuỗi mẫu.
+
+id: demo_two_step
+type: flow
+kind: sequential                 # sequential (khai báo bằng YAML) | python (hàm trong orchestrators/flows/)
+name: Demo hai bước
+description: >
+  Viết hoa văn bản rồi tóm tắt kết quả thành một câu. Dùng để kiểm chứng
+  đường ống tool -> agent chạy đúng thứ tự và nối được dữ liệu.
+
+inputs:
+  - name: text
+    type: string
+    required: true
+    description: Văn bản đầu vào của flow.
+
+steps:
+  - id: upper
+    ref: upper_text              # -> configs/tools/upper_text.yaml (type: tool)
+    input:
+      text:
+        from: flow_input
+        name: text
+
+  - id: summarize
+    ref: summarize_text          # -> configs/agents/summarize_text.yaml (type: agent, tier: fast)
+    input:
+      text:
+        from: step
+        step: upper
+        output: text
+
+output:
+  from: step
+  step: summarize
+  output: summary

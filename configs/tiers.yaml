@@ -1,0 +1,50 @@
+# configs/tiers.yaml
+# ĐÂY LÀ NƠI DUY NHẤT TRONG TOÀN REPO ĐƯỢC PHÉP CHỨA TÊN MODEL THẬT.
+# Không file agent, tool, flow, hay .py nào được viết tên model.
+# Agent chỉ khai báo `tier`; việc ánh xạ tier -> provider + model xảy ra ở đây.
+#
+# Đổi model cho toàn hệ thống = sửa đúng file này, không sửa dòng code nào.
+#
+# ===== CẦN OWNER ĐIỀN =====
+# Mọi giá trị `provider`, `model`, `cost_per_1m_*_usd` dưới đây đang để TRỐNG
+# có chủ đích. Chúng KHÔNG được đoán hộ.
+#   - provider: điền đúng một `id` có trong configs/providers.yaml
+#                (hợp lệ: anthropic | gemini | openai) và provider đó phải
+#                đang có API key trên máy (settings.AVAILABLE_PROVIDERS).
+#   - model:    điền đúng tên model của provider đó, chép nguyên văn từ tài
+#                liệu chính thức của provider. Chuỗi rỗng "" = chưa cấu hình;
+#                llm/client.py sẽ raise lỗi rõ ràng thay vì gọi API mò.
+#   - cost_*:   giá USD trên 1.000.000 token, lấy từ bảng giá của provider.
+#                null = chưa biết giá; usage vẫn ghi token, cột chi phí để null.
+# ==========================
+
+tiers:
+  fast:
+    description: >
+      Khối lượng lớn, mỗi lượt ngắn: rút trích trường, phân loại, chuẩn hoá.
+      Ưu tiên rẻ và nhanh hơn là sâu sắc. Dùng khi số lượt gọi lớn.
+    provider: ""                    # TODO(owner): anthropic | gemini | openai
+    model: ""                       # TODO(owner): tên model nhanh/rẻ nhất của provider trên
+    max_tokens: 1024                # trần token OUTPUT cho mỗi lời gọi ở tier này
+    cost_per_1m_input_usd: null     # TODO(owner): USD / 1M token input
+    cost_per_1m_output_usd: null    # TODO(owner): USD / 1M token output
+
+  standard:
+    description: >
+      Tier mặc định. Dùng khi không có lý do rõ ràng để chọn fast hay deep.
+    provider: ""                    # TODO(owner): anthropic | gemini | openai
+    model: ""                       # TODO(owner): tên model cân bằng của provider trên
+    max_tokens: 4096
+    cost_per_1m_input_usd: null     # TODO(owner)
+    cost_per_1m_output_usd: null    # TODO(owner)
+
+  deep:
+    description: >
+      Phân tích phức tạp, tổng hợp nhiều nguồn, suy luận nhiều bước.
+      Đắt và chậm hơn: chỉ dùng cho số lượt gọi ÍT, trên dữ liệu đã được
+      tier fast gom/rút trích sẵn.
+    provider: ""                    # TODO(owner): anthropic | gemini | openai
+    model: ""                       # TODO(owner): tên model mạnh nhất của provider trên
+    max_tokens: 8192
+    cost_per_1m_input_usd: null     # TODO(owner)
+    cost_per_1m_output_usd: null    # TODO(owner)
