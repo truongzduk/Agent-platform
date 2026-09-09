@@ -1,0 +1,31 @@
+# configs/agents/summarize_text.yaml
+# AGENT MẪU — CÓ gọi LLM.
+# Vì type: agent nên `tier` là BẮT BUỘC. Tuyệt đối không viết tên model ở đây:
+# tier -> provider + model được resolve trong configs/tiers.yaml.
+# Đổi tier từ fast sang deep = sửa đúng một dòng dưới đây, không sửa code.
+# Token của bước này ĐƯỢC tính vào ngân sách của run, tách riêng theo tier.
+
+id: summarize_text
+type: agent
+name: Tóm tắt văn bản
+description: >
+  Đọc một đoạn văn bản và trả về bản tóm tắt đúng một câu, không lời dẫn.
+
+tier: fast                      # fast | standard | deep — phải có trong configs/tiers.yaml
+entrypoint: agents.summarize_text.agent:run
+
+system_prompt: >
+  Bạn là bộ tóm tắt. Đọc văn bản người dùng cung cấp và trả lời bằng ĐÚNG MỘT
+  CÂU tóm tắt nội dung chính. Không thêm lời dẫn, không gạch đầu dòng, không
+  xuống dòng, không giải thích thêm.
+
+inputs:
+  - name: text
+    type: string
+    required: true
+    description: Văn bản cần tóm tắt.
+
+outputs:
+  - name: summary
+    type: string
+    description: Bản tóm tắt gồm đúng một câu.

@@ -1,0 +1,19 @@
+# configs/permissions.yaml
+# CATALOG: ai là owner, ai là member.
+#
+# Quy ước đã chốt cho Giai đoạn 1:
+#   - owner  : được sửa mọi file trong configs/ (thêm tool/agent/flow, đổi tier,
+#              điền tên model, đổi hạn mức). Được chạy mọi thứ.
+#   - member : CHỈ được chạy. Không sửa file nào trong configs/.
+#
+# Đây là quy ước tổ chức, KHÔNG phải cơ chế kỹ thuật cưỡng chế: Giai đoạn 1 mỗi
+# người chạy một instance riêng trên máy riêng với API_BEARER_TOKEN riêng do
+# chính họ sinh ra bằng `python setup.py`. Việc chặn sửa configs/ được thực thi
+# bằng quyền trên repo (review/branch protection), không phải bằng runtime.
+# serve/ KHÔNG dùng file này để xác thực; xác thực vẫn là bearer token đơn.
+
+owners:
+  - id: ""            # TODO(owner): định danh người sở hữu (email hoặc tên đăng nhập git)
+    note: Người duy nhất được sửa configs/.
+
+members: []           # TODO(owner): liệt kê member dạng { id: "...", note: "..." }

@@ -1,0 +1,24 @@
+# configs/tools/upper_text.yaml
+# TOOL MẪU — code xác định, KHÔNG gọi LLM.
+# Vì type: tool nên file này TUYỆT ĐỐI KHÔNG được có trường `tier` hay `model`.
+# Bước tool không tính vào ngân sách token của run, chỉ được đếm số lần chạy.
+
+id: upper_text
+type: tool
+name: Viết hoa văn bản
+description: >
+  Nhận một chuỗi văn bản và trả về đúng chuỗi đó ở dạng chữ hoa.
+  Thuần Python, kết quả xác định, không gọi LLM, không tốn token.
+
+entrypoint: tools.upper_text:run
+
+inputs:
+  - name: text
+    type: string
+    required: true
+    description: Văn bản đầu vào cần viết hoa.
+
+outputs:
+  - name: text
+    type: string
+    description: Văn bản đã được viết hoa toàn bộ.

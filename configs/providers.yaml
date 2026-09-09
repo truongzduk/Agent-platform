@@ -1,0 +1,25 @@
+# configs/providers.yaml
+# CATALOG: nhà cung cấp LLM nào được phép dùng trong dự án này.
+# File này KHÔNG chứa logic, KHÔNG chứa API key, KHÔNG chứa tên model.
+# Tên model chỉ được phép xuất hiện trong configs/tiers.yaml.
+#
+# Đối chiếu với settings.AVAILABLE_PROVIDERS: settings.py suy ra danh sách
+# provider THỰC SỰ có key từ .env. Một provider chỉ dùng được khi
+# enabled: true Ở ĐÂY *VÀ* có mặt trong settings.AVAILABLE_PROVIDERS.
+# File này là ý muốn của owner; settings.AVAILABLE_PROVIDERS là thực tế trên máy.
+
+providers:
+  - id: anthropic
+    enabled: true
+    api_key_env: ANTHROPIC_API_KEY   # TÊN biến môi trường, không phải giá trị key
+    description: Anthropic API.
+
+  - id: gemini
+    enabled: true
+    api_key_env: GEMINI_API_KEY
+    description: Google Generative AI API.
+
+  - id: openai
+    enabled: true
+    api_key_env: OPENAI_API_KEY
+    description: OpenAI API.
